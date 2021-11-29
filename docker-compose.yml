@@ -1,15 +1,43 @@
 version: "3.3"
 
 services:
-  app:
+  db:
+    image: postgres:13-alpine
+    restart: always
+    networks:
+      - portfolio
+    volumes:
+      - ./docker/db/data:${PGDATA:-/var/lib/postgresql/data}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-root}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-root}
+      POSTGRES_DB: ${POSTGRES_DB:-portfolio}
+    ports:
+      - ${POSTGRES_PORT:-5433}:5432
+
+  backend:
+    ports:
+      - 5000:5000
+    networks:
+      - portfolio
+    build: 
+      context: backend
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+  frontend:
     ports:
       - 3000:3000
     build:
       context: frontend
       dockerfile: Dockerfile
-    volumes:
-      - ./frontend:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/.next
+    # volumes:
+    #   - ./frontend:/usr/src/app
+    #   - /usr/src/app/node_modules
+    #   - /usr/src/app/.next
     env_file:
       - .env
+
+networks:
+  portfolio:
+    driver: bridge
