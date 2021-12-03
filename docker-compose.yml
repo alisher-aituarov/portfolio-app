@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.8"
 
 services:
   db:
@@ -16,18 +16,21 @@ services:
       - ${POSTGRES_PORT:-5433}:5432
 
   backend:
-    ports:
-      - 5000:5000
-    networks:
-      - portfolio
-    build: 
+    build:
       context: backend
+      target: dev
       dockerfile: Dockerfile
-    env_file:
-      - .env
+    volumes:
+      - ./backend/:/src
+    command: npm run start:dev
+    ports:
+      - "5000:3000"
+    environment:
+      NODE_ENV: development
+      DEBUG: nodejs-docker-express:*
   frontend:
     ports:
-      - 3000:3000
+      - 3001:3000
     build:
       context: frontend
       dockerfile: Dockerfile
@@ -35,8 +38,6 @@ services:
     #   - ./frontend:/usr/src/app
     #   - /usr/src/app/node_modules
     #   - /usr/src/app/.next
-    env_file:
-      - .env
 
 networks:
   portfolio:
