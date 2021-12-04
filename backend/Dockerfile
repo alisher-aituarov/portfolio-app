@@ -1,4 +1,4 @@
-FROM node:14-alpine as base
+FROM node:14 as base
 
 WORKDIR /src
 COPY package*.json /
@@ -14,4 +14,4 @@ FROM base as dev
 ENV NODE_ENV=development
 RUN npm install -g nodemon && npm install
 COPY . /
-CMD ["nodemon", "bin/www"]
+CMD ["nodemon", "app.js"]

@@ -65,3 +65,6 @@ typings/
 
 # Nextjs
 .next
+
+#Docker
+docker
