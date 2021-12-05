@@ -2,14 +2,15 @@ version: "3.8"
 
 services:
   postgres:
+    container_name: database
     image: postgres:13-alpine
     # restart: always
-    volumes:
-      - ./docker/db/data:${PGDATA:-/var/lib/postgresql/data}
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      # POSTGRES_DB: db
+      POSTGRES_DB: portfoliodb
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
     ports:
       - 5432:5432
   backend:
@@ -27,10 +28,6 @@ services:
     environment:
       NODE_ENV: development
       DEBUG: nodejs-docker-express:*
-      DB_SCHEMA: postgres
-      DB_USER: root
-      DB_PASSWORD: root
-      DB_HOST: postgres
   frontend:
     ports:
       - 3001:3000
@@ -41,7 +38,3 @@ services:
     #   - ./frontend:/usr/src/app
     #   - /usr/src/app/node_modules
     #   - /usr/src/app/.next
-
-networks:
-  portfolio:
-    driver: bridge

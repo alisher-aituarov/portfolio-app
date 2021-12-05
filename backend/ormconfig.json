@@ -4,10 +4,20 @@
     "port": 5432,
     "username": "root",
     "password": "root",
-    "database": "postgresdb",
-    "entities": ["entity/*.js"],
-    "migrations": ["migration/*.js"],
+    "database": "portfoliodb",
+    "entities": [
+      "src/entity/*.ts"
+    ],
+    "migrations": [
+        "src/migration/*.ts"
+    ],
+    "subscribers": [
+        "src/subscriber/*.ts"
+    ],
     "cli": {
-        "migrationsDir": "migration"
-    }
+        "entitiesDir": "src/entity",
+        "migrationsDir": "src/migration",
+        "subscribersDir": "src/subscriber"
+    },
+    "synchronize": false
 }

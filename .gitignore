@@ -68,3 +68,6 @@ typings/
 
 #Docker
 docker
+
+#database 
+pgdata
