@@ -19,5 +19,5 @@
         "migrationsDir": "src/migration",
         "subscribersDir": "src/subscriber"
     },
-    "synchronize": false
+    "synchronize": true
 }
