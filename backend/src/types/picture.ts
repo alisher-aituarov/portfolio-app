@@ -1,5 +1,9 @@
 export interface IncomingPictureShape {
   name: string;
   is_main: boolean;
-  picture: any[];
+  picture: any;
+}
+
+export interface UpdatingPictureShape extends IncomingPictureShape {
+  id: string;
 }
