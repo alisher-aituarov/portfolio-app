@@ -1,12 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "lib": [
-      "dom",
-      "es6",
-      "es2017",
-      "esnext.asynciterable"
+      "es2021",
     ],
     "sourceMap": true,
     "outDir": "./dist",
@@ -17,8 +14,6 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": false,

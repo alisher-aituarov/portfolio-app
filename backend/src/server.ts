@@ -1,55 +1,34 @@
-const { createConnection } = require("typeorm");
+import { Request, Response } from "express";
 
-(async function () {
-  try {
-    const connection = await createConnection();
-    console.log("Connection with Postgres established");
-    return connection;
-  } catch (error) {
-    throw new Error(error);
-  }
-})();
+const express = require("express");
+const pictureRoutes = require("./routes/picture");
+const fileUpload = require("express-fileupload");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const morgan = require("morgan");
 
-// var typeorm = require("typeorm");
+const app = express();
 
-// typeorm
-//   .createConnection({
-//     type: "postgres",
-//     host: "postgres",
-//     port: 5432,
-//     username: "root",
-//     password: "root",
-//     database: "portfoliodb",
-//     synchronize: true,
-//     entities: [require("./entity/Post"), require("./entity/Category")],
-//   })
-//   .then(function (connection) {
-//     var category1 = {
-//       name: "TypeScript",
-//     };
-//     var category2 = {
-//       name: "Programming",
-//     };
+app.use(
+  fileUpload({
+    createParentPath: true,
+    limits: {
+      fileSize: 1024 * 1024 * 1024, //1 MB max file(s) size
+    },
+  })
+);
 
-//     var post = {
-//       title: "Control flow based type analysis",
-//       text: "TypeScript 2.0 implements a control flow-based type analysis for local variables and parameters.",
-//       categories: [category1, category2],
-//     };
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(morgan("combined"));
 
-//     var postRepository = connection.getRepository("Post");
-//     postRepository
-//       .save(post)
-//       .then(function (savedPost) {
-//         console.log("Post has been saved: ", savedPost);
-//         console.log("Now lets load all posts: ");
+app.use("/pictures", pictureRoutes);
 
-//         return postRepository.find();
-//       })
-//       .then(function (allPosts) {
-//         console.log("All posts: ", allPosts);
-//       });
-//   })
-//   .catch(function (error) {
-//     console.log("Error: ", error);
-//   });
+app.get("/", (req: Request, res: Response) => {
+  res.send({ msg: "huinya" });
+});
+
+app.listen(3000, () => {
+  console.log("server started");
+});
