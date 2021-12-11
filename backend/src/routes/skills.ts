@@ -14,7 +14,7 @@ connection.then((connection: Connection) => {
   const repository = getRepository(Skill);
 
   router.get("/", async (req: PostRequest, res: Response) => {
-    const skills = repository.find();
+    const skills = await repository.find();
     res.json({
       data: skills,
     });
