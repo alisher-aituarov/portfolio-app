@@ -33,7 +33,7 @@ connection.then((connection: Connection) => {
 
   router.get("/", async (req: Request, res: Response) => {
     const picture = await repository.findOne({ id: "2" });
-    res.send({ msg: picture });
+    res.send({ data: picture });
   });
 
   router.post(
@@ -103,7 +103,7 @@ connection.then((connection: Connection) => {
       .optional(),
     async (req: TRequestUpdate, res: Response) => {
       const { id, name, is_main } = req.body;
-      const targetPicture = await repository.findOne({ id: id });
+      const targetPicture = await repository.findOne({ is_main: true });
       if (!targetPicture) {
         return res.status(404).send({
           success: false,

@@ -19,10 +19,12 @@ services:
       target: dev
       dockerfile: Dockerfile
     volumes:
-      - ./backend/:/src
+      - "./backend/:/src"
+      # - "/src/node_modules/"
     command: npm run start:dev
     ports:
       - "5000:3000"
+    # tty: true
     depends_on:
       - postgres
     environment:
