@@ -71,3 +71,6 @@ docker
 
 #database 
 pgdata
+
+#static
+uploads

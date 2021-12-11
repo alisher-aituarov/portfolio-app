@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 
 const express = require("express");
+// Routes
 const pictureRoutes = require("./routes/picture");
+const skillsRoutes = require("./routes/skills");
+
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -24,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("combined"));
 
 app.use("/pictures", pictureRoutes);
+app.use("/skills", skillsRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send({ msg: "huinya" });
