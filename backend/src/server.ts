@@ -4,6 +4,7 @@ const express = require("express");
 // Routes
 const pictureRoutes = require("./routes/picture");
 const skillsRoutes = require("./routes/skills");
+const experienceRoutes = require("./routes/experience");
 
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
@@ -26,12 +27,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("combined"));
 
+// Routes
 app.use("/pictures", pictureRoutes);
 app.use("/skills", skillsRoutes);
-
-app.get("/", (req: Request, res: Response) => {
-  res.send({ msg: "huinya" });
-});
+app.use("/experience", experienceRoutes);
 
 app.listen(3000, () => {
   console.log("server started");
