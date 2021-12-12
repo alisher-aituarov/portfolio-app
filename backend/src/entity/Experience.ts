@@ -8,7 +8,10 @@ export class Experience {
   id: string;
 
   @Column()
-  address: string;
+  position: string;
+
+  @Column()
+  city: string;
 
   @Column()
   company?: string;
@@ -16,8 +19,10 @@ export class Experience {
   @Column()
   from: Date;
 
-  @Column()
-  to: Date;
+  @Column({
+    nullable: true,
+  })
+  to!: Date;
 
   @Column("boolean", { default: false })
   current?: boolean = false;

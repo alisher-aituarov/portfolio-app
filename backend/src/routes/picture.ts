@@ -32,7 +32,7 @@ connection.then((connection: Connection) => {
   const repository = getRepository(Picture);
 
   router.get("/", async (req: Request, res: Response) => {
-    const picture = await repository.findOne({ id: "2" });
+    const picture = await repository.findOne({ is_main: true });
     res.send({ data: picture });
   });
 
