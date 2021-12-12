@@ -4,6 +4,7 @@ const express = require("express");
 // Routes
 const pictureRoutes = require("./routes/picture");
 const skillsRoutes = require("./routes/skills");
+const cvsRoutes = require("./routes/cv");
 
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
@@ -28,6 +29,7 @@ app.use(morgan("combined"));
 
 app.use("/pictures", pictureRoutes);
 app.use("/skills", skillsRoutes);
+app.use("/cvs", cvsRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send({ msg: "huinya" });
