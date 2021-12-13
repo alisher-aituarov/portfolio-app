@@ -3,7 +3,7 @@ import { Connection, Not } from "typeorm";
 import { connection } from "../db/connection";
 import { getRepository } from "typeorm";
 import { body, validationResult } from "express-validator";
-import { Skill } from "../entity/Skills";
+import { Experience } from "../entity/Experience";
 
 const express = require("express");
 const router = express.Router();
@@ -11,21 +11,23 @@ const router = express.Router();
 interface PostRequest extends Request {}
 
 connection.then((connection: Connection) => {
-  const repository = getRepository(Skill);
+  const repository = getRepository(Experience);
 
-  router.get("/", async (req: PostRequest, res: Response) => {
-    const skills = await repository.find();
+  router.get("/", async (req: Request, res: Response) => {
+    const data = await repository.find();
     res.json({
-      data: skills,
+      data,
     });
   });
 
   router.post(
     "/",
-    body("name").isLength({
-      min: 3,
-      max: 100,
-    }),
+    body("position").isLength({ min: 5, max: 50 }),
+    body("city").isLength({ min: 5, max: 100 }),
+    body("company").isLength({ min: 5, max: 100 }),
+    body("from").isDate(),
+    body("to").isDate(),
+    body("current").isBoolean(),
     body("description_ru").isLength({
       min: 10,
       max: 100,
@@ -38,25 +40,21 @@ connection.then((connection: Connection) => {
       min: 10,
       max: 100,
     }),
-    body("level").isFloat({
-      min: 1,
-      max: 10,
-    }),
     async (req: Request, res: Response) => {
       const errors = validationResult(req);
+      const { body } = req;
       if (!errors.isEmpty()) {
         res.status(400).json({
           success: false,
           error: errors.array(),
         });
       }
-      const skill = repository.create(req.body);
-
+      const experience = repository.create(body);
       try {
-        await repository.save(skill);
+        await repository.save(experience);
         res.send({
           success: true,
-          msg: "Skill has been saved",
+          msg: "Entity have been saved",
         });
       } catch (error) {
         res.status(500).json({
@@ -69,12 +67,12 @@ connection.then((connection: Connection) => {
 
   router.put(
     "/:id",
-    body("name")
-      .isLength({
-        min: 3,
-        max: 100,
-      })
-      .optional(),
+    body("position").isLength({ min: 5, max: 50 }).optional(),
+    body("city").isLength({ min: 5, max: 100 }).optional(),
+    body("company").isLength({ min: 5, max: 100 }).optional(),
+    body("from").isDate().optional(),
+    body("to").isDate().optional(),
+    body("current").isBoolean().optional(),
     body("description_ru")
       .isLength({
         min: 10,
@@ -93,34 +91,30 @@ connection.then((connection: Connection) => {
         max: 100,
       })
       .optional(),
-    body("level")
-      .isFloat({
-        min: 1,
-        max: 10,
-      })
-      .optional(),
     async (req: Request, res: Response) => {
-      const entityID = req.params.id;
-      const newSkills = req.body;
-      const skill = repository.findOne({ id: entityID });
-      if (!skill) {
-        res.status(404).json({
-          success: false,
-          msg: "Entity not found",
-        });
-      }
       const errors = validationResult(req);
+      const entityID = req.params.id;
       if (!errors.isEmpty()) {
         res.status(400).json({
           success: false,
           error: errors.array(),
         });
       }
+
+      const entity = await repository.findOne({ id: entityID });
+      if (!entity) {
+        res.status(404).json({
+          success: false,
+          error: "Entity not found",
+        });
+      }
+
+      const { body } = req;
       try {
-        await repository.update(entityID, newSkills);
+        await repository.update(entityID, body);
         res.send({
           success: true,
-          msg: "Skill has been updated",
+          msg: "Entity has been updated",
         });
       } catch (error) {
         res.status(500).json({
@@ -137,7 +131,7 @@ connection.then((connection: Connection) => {
       await repository.delete({ id: entityID });
       res.send({
         success: true,
-        msg: "Skill has been deleted",
+        msg: "Entity has been deleted",
       });
     } catch (error) {
       res.status(500).json({
