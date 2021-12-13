@@ -1,11 +1,10 @@
-import { Request, Response } from "express";
-
 const express = require("express");
 // Routes
 const pictureRoutes = require("./routes/picture");
 const skillsRoutes = require("./routes/skills");
 const cvsRoutes = require("./routes/cv");
 const experienceRoutes = require("./routes/experience");
+const contactsRoutes = require("./routes/contacts");
 
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
@@ -33,6 +32,7 @@ app.use("/pictures", pictureRoutes);
 app.use("/skills", skillsRoutes);
 app.use("/cvs", cvsRoutes);
 app.use("/experience", experienceRoutes);
+app.use("/contacts", contactsRoutes);
 
 app.listen(3000, () => {
   console.log("server started");

@@ -65,7 +65,6 @@ connection.then((connection: Connection) => {
         const incomingPicture = req.files.picture;
         const picturePath =
           UPLOADS + "/" + incomingPicture.name.split(" ").join("_");
-        console.log(picturePath);
         incomingPicture.mv(picturePath);
 
         const picture = repository.create();
